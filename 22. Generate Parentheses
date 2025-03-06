@@ -1,0 +1,29 @@
+Description: Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+Time: O(N * 4^N), Space: O(N)
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+    let res = [];
+    let seq = [];
+    function backtrack(open, close, limit){
+        if(open > limit || close > limit) return;
+        if(open === limit && close === limit){
+            res.push(seq.join(""));
+            return;
+        }
+        seq.push('(');
+        backtrack(open + 1, close, limit);
+        seq.pop();
+
+        if(close < open){
+            seq.push(')');
+            backtrack(open, close + 1, limit);
+            seq.pop();
+        }
+    }
+    backtrack(0,0,n);
+    return res;
+};
