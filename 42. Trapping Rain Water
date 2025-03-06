@@ -1,0 +1,28 @@
+Time: O(N)
+Space: O(N)
+
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+    let n = height.length;
+    let left = new Array(n).fill(0);
+    let right = new Array(n).fill(0);
+    let curMax = height[0];
+    for(let i = 1; i < n - 1; i++){
+        left[i] = curMax;
+        curMax = Math.max(curMax, height[i]);
+    }
+    curMax = height[n - 1];
+    for(let i = n - 2; i > 0; i--){
+        right[i] = curMax;
+        curMax = Math.max(height[i], curMax);
+    }
+    let res = 0;
+    for(let i = 1; i < n - 1; i++){
+        let minHeight = Math.min(left[i],right[i]);
+        if(minHeight > height[i]) res += minHeight - height[i]; 
+    }
+    return res;
+};
