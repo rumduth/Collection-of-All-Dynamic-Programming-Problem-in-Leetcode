@@ -1,0 +1,32 @@
+Description: Given a string containing just the characters '(' and ')', return the length of the longest valid (well-formed) parentheses substring.
+
+Time: O(N), Space: (N)
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var longestValidParentheses = function(s) {
+    let n = s.length;
+    let dp = new Array(n).fill(0);
+    let res = 0;
+    for(let i = 0; i < n; i++){
+        if(s[i] === ')'){
+            if(i > 0){
+                if(s[i-1] === '('){
+                    if(i >= 2) dp[i] = 2 + dp[i-2];
+                    else dp[i] = 2;   
+                }
+                else{
+                    let lastIndex = i - dp[i-1] - 1;
+                    if(s[lastIndex] === '('){
+                        if(lastIndex === 0) dp[i] = 2 + dp[i-1];
+                        else dp[i] = 2 + dp[i-1] + dp[lastIndex - 1];
+                    }
+                }
+            }
+        }
+        res = Math.max(res, dp[i]);
+    }
+    return res;
+};
