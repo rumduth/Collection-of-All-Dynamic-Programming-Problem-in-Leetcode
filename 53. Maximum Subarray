@@ -1,0 +1,16 @@
+Time: O(n), Space: (1)
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+    let res = -Infinity;
+    let sum = 0;
+    for(let num of nums){
+        sum += num;
+        res = Math.max(res, sum);
+        sum = Math.max(sum, 0);
+    }
+    return res;
+};
