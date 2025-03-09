@@ -1,0 +1,44 @@
+Time: O(m*n)
+Space: O(m*n)
+
+/**
+ * @param {character[][]} matrix
+ * @return {number}
+ */
+var maximalRectangle = function(matrix) {
+    function helper(arr){
+        let n = arr.length;
+        let left = new Array(n).fill(0);
+        let right = new Array(n).fill(n);
+        let stack = [];
+        for(let i = 0; i < n; i++){
+            while(stack.length && arr[stack.at(-1)] >= arr[i]) stack.pop();
+            if(!stack.length) left[i] = i;
+            else left[i] = (i - 1 - stack.at(-1));
+            stack.push(i);
+        }
+        stack = [];
+        for(let i = n - 1; i >= 0; i--){
+            while(stack.length && arr[stack.at(-1)] >= arr[i]) stack.pop();
+            if(!stack.length) right[i] = n - i - 1;
+            else right[i] = (stack.at(-1) - i - 1);
+            stack.push(i);
+        }
+        let res = 0;
+        for(let i = 0; i < n; i++){
+            res = Math.max(res, (1 + left[i] + right[i]) * arr[i]);
+        }
+        return res;
+    }
+
+
+    let m = matrix.length;
+    let n = matrix[0].length;
+    for(let i = 0; i < m; i++) for(let j = 0; j < n; j++) if(matrix[i][j] === '1') matrix[i][j] = 1; else matrix[i][j] = 0;
+    for(let i = 1; i < m; i++) for(let j = 0; j < n; j++){
+        if(matrix[i][j] > 0) matrix[i][j] += matrix[i-1][j];
+    }
+    let res = 0;
+    for(let i = 0; i < m; i++) res = Math.max(res, helper(matrix[i]));
+    return res;
+};
