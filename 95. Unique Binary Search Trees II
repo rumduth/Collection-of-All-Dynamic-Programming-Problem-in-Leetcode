@@ -1,0 +1,38 @@
+Time: O(4^n/√n)
+Space:O(n * 4^n/√n)
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number} n
+ * @return {TreeNode[]}
+ */
+var generateTrees = function(n) {
+    let memo = new Map();
+    function dfs(start, end){
+        let key = `${start}-${end}`;
+        if(memo.has(key)) return memo.get(key);
+        if(start > end) return [null];
+        if(start === end) return [new TreeNode(start)];
+        let tree = [];
+        for(let i = start; i <= end; i++){
+            for(let left of dfs(start, i - 1)){
+                for(let right of dfs(i + 1, end)){
+                    let node = new TreeNode(i);
+                    node.left = left;
+                    node.right = right;
+                    tree.push(node);
+                }
+            }
+        }
+        memo.set(key, tree);
+        return tree;
+    }
+    return dfs(1, n);
+};
