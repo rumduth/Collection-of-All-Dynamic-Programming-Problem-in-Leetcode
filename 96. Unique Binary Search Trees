@@ -1,0 +1,20 @@
+Time: O(n^2)
+Space: O(n)
+
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numTrees = function(n) {
+    let memo = new Map();
+    function dfs(n){
+        if(memo.has(n)) return memo.get(n);
+        if(n <= 1) return 1;
+        let cnt = 0;
+        for(let num = 1; num <= n; num++) cnt +=  dfs(num - 1) * dfs(n - num);
+        memo.set(n, cnt);
+        return cnt;
+    }
+    return dfs(n);
+};
