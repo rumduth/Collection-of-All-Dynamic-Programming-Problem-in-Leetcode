@@ -1,0 +1,14 @@
+Time: O(n)
+Space: O(1)
+
+/**
+ * @param {number} rowIndex
+ * @return {number[]}
+ */
+var getRow = function(rowIndex) {
+    if(rowIndex === 0) return [1];
+    let n = rowIndex + 1;
+    let res = new Array(n).fill(1);
+    for(let i = 1; i < res.length - 1; i++) res[i] = res[i-1] * (n - i) / i;
+    return res;
+};
