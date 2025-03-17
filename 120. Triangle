@@ -1,0 +1,19 @@
+Time: O(n*n)
+Space: O(1)
+
+/**
+ * @param {number[][]} triangle
+ * @return {number}
+ */
+var minimumTotal = function(triangle) {
+    let m = triangle.length;
+    for(let r = 1; r < m; r++){
+        let n = triangle[r].length;
+        for(let c = 0; c < n; c++){
+            if(c === 0) triangle[r][c] += triangle[r-1][c];
+            else if(c === n - 1) triangle[r][c] += triangle[r - 1][c - 1];
+            else triangle[r][c] += Math.min(triangle[r-1][c], triangle[r-1][c-1])
+        }
+    }
+    return Math.min(...triangle.at(-1));
+};
