@@ -1,0 +1,28 @@
+Time: O(n)
+Space: O(h)
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxPathSum = function(root) {
+    let res = -Infinity;
+    function dfs(node){
+        if(!node) return -1e9;
+        let leftTree = dfs(node.left);
+        let rightTree = dfs(node.right);
+        res = Math.max(leftTree, rightTree, leftTree + node.val, rightTree + node.val, leftTree + rightTree + node.val, node.val, res);
+        return Math.max(leftTree + node.val, rightTree + node.val, node.val);
+    }
+    dfs(root);
+    return res;
+    
+};
