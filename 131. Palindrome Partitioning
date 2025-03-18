@@ -1,0 +1,30 @@
+Time: O(n * 2^n)
+Space: O(n * n)
+
+/**
+ * @param {string} s
+ * @return {string[][]}
+ */
+var partition = function(s) {
+    let n = s.length;
+    let dp = Array.from({length: n}, () => new Array(n).fill(true));
+    for(let i = n - 2; i >= 0; i--) for(let j = i + 1; j < n; j++) if(s[i] === s[j]) dp[i][j] = dp[i+1][j-1]; else dp[i][j] = false;
+    let memo = new Map();
+    function dfs(i){
+        if(i === n) return [[]];
+        if(memo.has(i)) return memo.get(i);
+        let groups = [];
+        for(let j = i; j < n; j++){
+            if(!dp[i][j]) continue;
+            let str = s.slice(i, j + 1);
+            let nextGroups = dfs(j + 1);
+            for(let group of nextGroups){
+                groups.push([str, ...group]);
+           }
+         }
+         memo.set(i, groups);
+         return groups;
+    }
+    return dfs(0);
+    
+};
