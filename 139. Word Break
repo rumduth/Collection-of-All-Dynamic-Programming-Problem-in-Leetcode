@@ -1,0 +1,19 @@
+Time: O(n * m * k)
+Space: O(n)
+
+/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean}
+ */
+var wordBreak = function(s, wordDict) {
+    let n = s.length;
+    let dp = new Array(n + 1).fill(false);
+    for(let w of wordDict) if(s.indexOf(w) === 0) dp[w.length] = true;
+    
+    for(let i = 1; i < n; i++){
+        if(!dp[i]) continue;
+        for(let w of wordDict) if(s.indexOf(w, i) === i) dp[i + w.length] = true;
+    }
+    return dp.at(-1);
+};
