@@ -1,0 +1,30 @@
+Time: O(n * 2^n)
+Space: O(2^n)
+
+/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {string[]}
+ */
+var wordBreak = function(s, wordDict) {
+    let n = s.length;
+    let curSeq = [];
+    let res = [];
+    function dfs(i){
+        if(i === n){
+            res.push(curSeq.join(" "));
+            return;
+        }
+        if(i > n) return;
+        for(let word of wordDict){
+            let substr = s.slice(i, i + word.length);
+            if(substr === word){
+                curSeq.push(word);
+                dfs(i + word.length);
+                curSeq.pop();
+            }
+        }
+    }
+    dfs(0);
+    return res;
+};
