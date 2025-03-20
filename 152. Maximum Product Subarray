@@ -1,0 +1,25 @@
+Time: O(n)
+Space: O(1)
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxProduct = function(nums) {
+    let n = nums.length;
+    if(n === 1) return nums[0];
+    let positive = nums[0];
+    let negative = nums[0];
+    let res = nums[0];
+    for(let i = 1; i < n; i++){
+        let curPositive = positive;
+        let curNegative = negative;
+
+        positive = Math.max(negative * nums[i], curPositive * nums[i], nums[i]);
+        negative = Math.min(negative * nums[i], curPositive * nums[i], nums[i]);
+        
+        res = Math.max(positive, negative, res);
+    }
+    return res;
+   
+};
