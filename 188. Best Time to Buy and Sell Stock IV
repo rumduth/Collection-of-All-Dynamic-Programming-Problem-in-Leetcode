@@ -1,0 +1,28 @@
+Time: O(n * k)
+Space: O(k)
+
+/**
+ * @param {number} k
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(k, prices) {
+    let n = prices.length;
+    let buys = Array.from({length: k}, () => new Array(n).fill(0));
+    let sells = Array.from({length: k}, () => new Array(n).fill(0));
+    let maxProfit = 0;
+    for(let i = 0; i < k; i++) buys[i][0] = -prices[0];
+    for(let i = 1; i < n; i++){
+        buys[0][i] = Math.max(buys[0][i-1], -prices[i]);
+        sells[0][i] = Math.max(sells[0][i-1], prices[i] + buys[0][i-1]);
+        maxProfit = Math.max(maxProfit, sells[0][i]);
+        for(let j = 1; j < k; j++){
+            buys[j][i] = Math.max(buys[j][i-1], sells[j-1][i-1] - prices[i]);
+            sells[j][i] = Math.max(sells[j][i-1], buys[j][i-1] + prices[i]);
+            maxProfit = Math.max(maxProfit, sells[j][i]);
+        }
+    }
+    return maxProfit;
+    
+    
+};
