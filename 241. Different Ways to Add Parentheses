@@ -1,0 +1,43 @@
+Time: O(2^n)
+Space: O(n)
+
+/**
+ * @param {string} expression
+ * @return {number[]}
+ */
+var diffWaysToCompute = function(expression) {
+    let memo = new Map();
+    let n = expression.length;
+    const isOperator = c => '+-*'.includes(c);
+    const getKey = (s, e) => `${s}-${e}`;
+    function dfs(s, e){
+        let k = getKey(s, e);
+        if(memo.has(k)) return memo.get(k);
+        let isExpression = false;
+        let res = [];
+        for(let i = s + 1; i < e; i++){
+            if(isOperator(expression[i])){
+                let firstOperand = dfs(s, i - 1);
+                let secondOperand = dfs(i + 1, e);
+                for(let val1 of firstOperand){
+                    for(let val2 of secondOperand){
+                        if(expression[i] === '+') res.push(+val1 + +val2);
+                        else if(expression[i] === '-') res.push(+val1 - +val2);
+                        else res.push(+val1 * +val2);
+                    }
+                }
+                isExpression = true;
+            }
+        }
+        if(!isExpression){
+            memo.set(k, [+expression.slice(s, e + 1)]);
+            return memo.get(k);
+        }
+        memo.set(k, res);
+        return res;
+       
+    }
+
+
+    return dfs(0, n - 1);
+};
