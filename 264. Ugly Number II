@@ -1,0 +1,27 @@
+Time: O(nlogn)
+Space: O(n)
+
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        priority_queue<long long, vector<long long>, greater<long long>> pq;
+        if(n == 1) return 1;
+        vector<int> factors = {2,3,5};
+        pq.push(1);
+        unordered_set<int> visited;
+        for(int i = 0; i < n; i++){
+            if(i == n - 1) return pq.top();
+            auto cur = pq.top();
+            pq.pop();
+            for(auto num: factors){
+                auto cand = num * cur;
+                if(visited.find(cand) == visited.end()){
+                    visited.insert(cand);
+                    pq.push(cand);
+                }
+            }
+            
+        }
+        return 1;
+    }
+};
