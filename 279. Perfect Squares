@@ -1,0 +1,26 @@
+Time: O(n*sqrt(n))
+Space: O(n)
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numSquares = function(n) {
+    if(n === 1) return 1;
+    let coins = [];
+    let val = 1;
+    while(val * val <= n){
+        coins.push(val * val);
+        val += 1;
+    }
+    let dp = new Array(n + 1).fill(Infinity);
+    dp[0] = 0;
+    dp[1] = 1;
+    for(let amount = 2; amount <= n; amount++){
+        for(let coin of coins){
+            if(coin > amount) break;
+            dp[amount] = Math.min(dp[amount], 1 + dp[amount - coin]);
+        }
+    }
+    return dp.at(-1);
+};
