@@ -1,0 +1,19 @@
+Time: O(m * n)
+Space: O(m + n)
+
+/**
+ * @param {number} n
+ * @param {number[]} primes
+ * @return {number}
+ */
+var nthSuperUglyNumber = function(n, primes) {
+    let dp = new Array(n).fill(1);
+    let index = new Array(primes.length).fill(0);
+    for(let i = 1; i < n; i++){
+        let cand = Infinity;
+        for(let j = 0; j < primes.length; j++) cand = Math.min(cand, dp[index[j]] * primes[j]);
+        for(let j = 0; j < primes.length; j++) if(cand === dp[index[j]] * primes[j]) index[j] += 1;
+        dp[i] = cand;
+    }
+    return dp.at(-1);
+};
