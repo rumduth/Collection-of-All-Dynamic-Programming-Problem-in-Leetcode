@@ -1,0 +1,34 @@
+Time: O(n^3)
+Space: O(n^2)
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxCoins = function(nums) {
+    nums = [1, ...nums, 1];
+    let getKey = (s, e) => `${s}.${e}`;
+    let n = nums.length;
+    let memo = new Map();
+    function dfs(s, e){
+        if(s > e) return 0;
+        let key = getKey(s, e);
+        if(memo.has(key)) return memo.get(key);
+        let res = 0;
+        for(let i = s; i <= e; i++){
+            res = Math.max(res, nums[s-1] * nums[i] * nums[e+1] + dfs(s, i - 1) + dfs(i + 1, e));
+        }
+        memo.set(key, res);
+        return res;   
+    }
+
+    return dfs(1, n-2);
+};
+
+
+
+/*
+
+
+xxxxxxx?xxxx
+
+*/
